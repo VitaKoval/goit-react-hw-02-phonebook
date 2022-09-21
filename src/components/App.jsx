@@ -47,6 +47,9 @@ class App extends Component {
   };
 
   deleteContact = contactId => {
+    //   if (!window.confirm('Are you sure?')) {
+    //     return;
+    // }
     this.setState(prevState => ({
       contacts: prevState.contacts.filter(contact => contact.id !== contactId),
     }));
