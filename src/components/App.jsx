@@ -8,10 +8,10 @@ import { Container } from './ui/App.styled';
 class App extends Component {
   state = {
     contacts: [
-      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+      // { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+      // { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+      // { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+      // { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
     ],
     filter: '',
   };
@@ -24,11 +24,11 @@ class App extends Component {
       number,
     };
 
-    const someName = this.state.contacts.some(
+    const findName = this.state.contacts.find(
       el => el.name.toLowerCase() === contact.name.toLowerCase()
     );
 
-    someName
+    findName
       ? alert(`${contact.name} is already in contacts`)
       : this.setState(({ contacts }) => ({
           contacts: [contact, ...contacts],
@@ -55,7 +55,32 @@ class App extends Component {
     }));
   };
 
+  // первая загрузка страниц
+  componentDidMount() {
+    // console.log('Первая загрузка');
+    const contactLocal = JSON.parse(localStorage.getItem('contacts'));
+
+    if (contactLocal) {
+      this.setState({ contacts: contactLocal });
+    }
+  }
+
+  // при изменении и перерендиге компонента
+  componentDidUpdate(prevState) {
+    // console.log('Обновление DOM')
+
+    // console.log('до обновления', prevState)
+    // console.log('после обновления компонента', this.state)
+
+    if (this.state.contacts !== prevState.contacts) {
+      // console.log('изменился список контактов');
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+      // console.log('1', this.state.contacts);
+    }
+  }
+
   render() {
+
     const { filter } = this.state;
     const filtredContacts = this.getFilterContacts();
 
